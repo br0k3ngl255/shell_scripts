@@ -121,7 +121,7 @@ while  [ \`ping -c 1 vk.com > /dev/null ;echo $?\` == \"0\" ];do
 							gnome-tweak-tool conky-all libreoffice icedove htop ntop\
 								python-software-properties mana-toolkit cookie-cadger xplico\
 							debian-goodies dosbox freeglut3-dev libxmu-dev libpcap-dev\
-						python-yowsup yowsup-clilibglib2.0 libxml2-dev libpcap-dev\
+						libglib2.0 libxml2-dev libpcap-dev\
 					libtool rrdtool autoconf automake autogen redis-server\
 				wget libsqlite3-dev libhiredis-dev libgeoip-dev mixxx \
 			audacity  -y 
