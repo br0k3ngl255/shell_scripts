@@ -36,23 +36,41 @@ gitInstall(){
 		wget http://www.secdev.org/projects/scapy/files/scapy-latest.tar.gz
 		tar xvzf scapy-latest; cd scapy* ; python setup.py install
 	}
-	
+
+setSwap(){
+		testSwap=`free|grep Swap|awk '{print $2}'`
+		if [ $testSwap -gt 0 ];then
+			true
+		elif [ $testSwap -eq 0 ];then
+			checkMount=`mount |grep sda>> /dev/null;echo $?`
+				if [ $checkMount == "0" ];then
+					swapon /dev/sda2
+				else 
+					echo " no swap"
+					true
+				fi	
+		else
+			true
+		fi
+	}
+
 ####
 #Main - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ -
 ####
- echo " setting up ENV:"
+echo " setting up ENV:"
 	userSpace
-	net_test=`ping -c 1 8.8.8.8 >>/dev/null;echo $?`
-	if [ $net_test == "0" ];then
-		storage_test=`df |grep rootfs|awk {'print $2'}`
-		if [ $storage_test -gt $storage_size ];then 
-			echo "installing software"
-				softWare
-					gitInstall
-		else
-			exit
-		fi
-	else 
-		echo " no network "
-		exit
-	fi
+		setSwap
+		net_test=`ping -c 1 8.8.8.8 >>/dev/null;echo $?`
+			if [ $net_test == "0" ];then
+				storage_test=`df |grep rootfs|awk {'print $2'}`
+					if [ $storage_test -gt $storage_size ];then 
+						echo "installing software"
+						softWare
+							gitInstall
+					else
+						exit
+					fi
+			else 
+					echo " no network "
+					exit
+			fi
