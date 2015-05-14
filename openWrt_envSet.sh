@@ -45,6 +45,10 @@ setSwap(){
 			checkMount=`mount |grep sda>> /dev/null;echo $?`
 				if [ $checkMount == "0" ];then
 					swapon /dev/sda2
+						echo -e "config 'swap' \n
+									option	device	'/dev/sda2' \n
+									option	enabled	'1' \n
+								" >> /etc/config/fstab
 				else 
 					echo " no swap"
 					true
