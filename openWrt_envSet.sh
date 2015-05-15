@@ -10,7 +10,7 @@
 storage_size=1969792
 
 ##Funcs +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-userSpace(){
+userSpace(){ ## adding aliases  and color via PS1 to shell
 	echo -e " 	export PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\#'
 			[ -x /bin/more ] || alias more=less \n
 			[ -x /usr/bin/vim ] && alias vi=vim || alias vim=vi \n
@@ -19,7 +19,7 @@ userSpace(){
 			" >> /etc/profile
 	}
 	
-softWare(){
+softWare(){ #installing some packages
 	opkg update;
 	LIST='python ipython python-bzip2 python-expat python-json python-kid python-mini python-mysql python-ncurses python-openssl python-pcap\
 	      python-rsfile python-sip python-smbus python-sqlite3  python-webpy python-xapian pyusb pyyaml nmap nodogsplash sslsniff sslstrip tcpdump\
@@ -31,13 +31,13 @@ softWare(){
 	done
 	}
 	
-gitInstall(){
+gitInstall(){ #installing external packages
 	mkdir git_tools -m 777;cd git_tools;
 		wget http://www.secdev.org/projects/scapy/files/scapy-latest.tar.gz
 		tar xvzf scapy-latest; cd scapy* ; python setup.py install
 	}
 
-setSwap(){
+setSwap(){ # trying to auto set swap automatically.
 		testSwap=`free|grep Swap|awk '{print $2}'`
 		if [ $testSwap -gt 0 ];then
 			true
@@ -58,7 +58,7 @@ setSwap(){
 		fi
 	}
 	
-do_expand_rootfs() { ## exported from raspi config to test on openwrt auto resize the partition.
+expandRootfs() { ## Imported from raspi config to test on openwrt auto resize the partition.
   if ! [ -h /dev/root ]; then
     whiptail --msgbox "/dev/root does not exist or is not a symlink. Don't know how to expand" 20 60 2
     return 0
