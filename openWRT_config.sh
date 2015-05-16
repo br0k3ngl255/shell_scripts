@@ -12,10 +12,10 @@ Reboot=0
 install_prerequisites(){
 	netTest=$(ping -c 1 >> /dev/null;echo $?)
 	if  [ "$netTest" == "0"];then 
-		opkg install whiptail fdisk
+		opkg install whiptail kmod-usb-storage block-mount kmod-fs-ext4 block-mount
 	else
 		whiptail --msgbox " network is not available |script will not work as needed --> exiting " 20 60 2
-		return 0
+		sleep 5; exit
 	fi
 	}
 	
@@ -24,8 +24,8 @@ wdth_hght(){
 	}
 
 expandFS(){
-	if ! [ -h /dev/root ]; then
-		whiptail --msgbox "/dev/root does not exist or is not a symlink. Don't know how to expand" 20 60 2
+	if ! [ -h /dev/sda ]; then
+		whiptail --msgbox "/dev/sda (external device) does not exist or is not connected. Can't expand what does not exits" 20 60 2
 		return 0
 	fi
 		ROOT_PART=$(readlink /dev/root)
@@ -88,6 +88,18 @@ EOF
 	if [ "$INTERACTIVE" = True ]; then
 		whiptail --msgbox "Root partition has been resized.\nThe filesystem will be enlarged upon the next reboot" 20 60 2	
 	fi
+	}
+
+usbRootFS(){
+		strgTest=$( fdisk -l |grep sda > /dev/null;echo $?)
+		if  [ $strgTest == "0" ];then
+			mkdir -p /tmp/cproot
+			mount --bind / /tmp/cproot
+			tar -C /tmp/cproot -cvf - . | tar -C /mnt/sda1 -x
+			umount /tmp/cproot
+		else
+			whiptail --msgbox " there no external drives||no usb device found"
+		fi
 	}
 
 changePaswd(){ ##function used to change root passwd
