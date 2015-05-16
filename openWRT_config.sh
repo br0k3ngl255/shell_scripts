@@ -131,10 +131,7 @@ overClock(){
 about(){
 	whiptail --msgbox " Welcome to openWRT_config created by br0k3ngl255
 		This Script initial was inspired by raspi_config script for RPI devices.
-		We just have recreated it for openWRT OS and continue to upgrade it with time
-		
-	"
-	
+		We just have recreated it for openWRT OS and continue to upgrade it with time"
 	}
 
 ###
