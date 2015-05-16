@@ -9,12 +9,22 @@
 Reboot=0
 
 ###Funcs/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+userSpace(){
+	echo -e " 	export PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\#'
+			[ -x /bin/more ] || alias more=less \n
+			[ -x /usr/bin/vim ] && alias vi=vim || alias vim=vi \n
+			[ -x /bin/ls ] && alias l=ls || alias ls=l || alias ll='ls -l' ||alias 'ls -l'=ll \n
+			[ -x /usr/bin/clear ] && alias cl=clear || alias clear=cl \n
+			" >> /etc/profile
+	}
+
 install_prerequisites(){
+userSpace
 	netTest=$(ping -c 1 >> /dev/null;echo $?)
 	if  [ "$netTest" == "0"];then 
 		opkg install whiptail kmod-usb-storage block-mount kmod-fs-ext4 block-mount
 	else
-		whiptail --msgbox " network is not available |script will not work as needed --> exiting " 20 60 2
+		echo  " network is not available |script will not work as needed --> exiting " 20 60 2
 		sleep 5; exit
 	fi
 	}
