@@ -21,16 +21,30 @@ userSpace(){
 install_prerequisites(){
 userSpace
 	netTest=$(ping -c 1 >> /dev/null;echo $?)
-	if  [ "$netTest" == "0"];then 
-		opkg install whiptail kmod-usb-storage block-mount kmod-fs-ext4 block-mount
+	if  [ "$netTest" == "0" ];then 
+		opkg update ;opkg install whiptail kmod-usb-storage block-mount kmod-fs-ext4 block-mount\
+						terminfo fdisk kmod-fs-nfs kmod-fs-ext4  libmount
 	else
 		echo  " network is not available |script will not work as needed --> exiting " 20 60 2
 		sleep 5; exit
 	fi
 	}
 	
-wdth_hght(){
-	
+wdth_hght(){ #implemented from raspi_config, to calc the the window size for whiptail--> openWRT doesn't have tput utility, 
+			# thus if not manully compiled for your system i have inserted value for script not to fail.
+	WT_HEIGHT=17
+	if  [ -e /usr/bin/tput ];then
+		WT_WIDTH=$(tput cols)
+	else 
+		WT_WIDTH=168
+	fi
+	if [ -z "$WT_WIDTH" ] || [ "$WT_WIDTH" -lt 60 ]; then
+		WT_WIDTH=80
+	fi
+	if [ "$WT_WIDTH" -gt 178 ]; then
+		WT_WIDTH=120
+	fi
+		WT_MENU_HEIGHT=$(($WT_HEIGHT-7))
 	}
 
 expandFS(){
