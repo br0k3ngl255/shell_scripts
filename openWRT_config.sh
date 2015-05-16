@@ -1,8 +1,8 @@
 #!/bin/sh
 #######################################################################
-#
-#
-#
+#Created by : br0k3ngl255
+#Inspired by : Alex Bradbury|asb --> raspi_config script creator
+#Purpose --> automate openWRT initial and deploy processes
 #######################################################################
 
 ###Vars +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -48,11 +48,11 @@ expandFS(){
 		return 0
 	fi
 # Get the starting offset of the root partition
-PART_START=$(parted /dev/mmcblk0 -ms unit s p | grep "^${PART_NUM}" | cut -f 2 -d:)
-[ "$PART_START" ] || return 1
+	PART_START=$(parted /dev/mmcblk0 -ms unit s p | grep "^${PART_NUM}" | cut -f 2 -d:)
+		[ "$PART_START" ] || return 1
 # Return value will likely be error for fdisk as it fails to reload the
 # partition table because the root fs is mounted
-fdisk /dev/sda <<EOF
+	fdisk /dev/sda <<EOF
 p
 d
 $PART_NUM
@@ -63,19 +63,11 @@ $PART_START
 p
 w
 EOF
-ASK_TO_REBOOT=1
+	ASK_TO_REBOOT=1
 # now set up an init.d script
-cat <<\EOF > /etc/init.d/resize2fs_once &&
+	cat <<\EOF > /etc/init.d/resize2fs_once &&
 #!/bin/sh
-### BEGIN INIT INFO
-# Provides: resize2fs_once
-# Required-Start:
-# Required-Stop:
-# Default-Start: 2 3 4 5 S
-# Default-Stop:
-# Short-Description: Resize the root filesystem to fill partition
-# Description:
-### END INIT INFO
+
 . /lib/lsb/init-functions
 case "$1" in
 start)
@@ -91,11 +83,11 @@ exit 3
 ;;
 esac
 EOF
-chmod +x /etc/init.d/resize2fs_once &&
-update-rc.d resize2fs_once defaults &&
-if [ "$INTERACTIVE" = True ]; then
-whiptail --msgbox "Root partition has been resized.\nThe filesystem will be enlarged upon the next reboot" 20 60 2
-fi
+		chmod +x /etc/init.d/resize2fs_once &&
+
+	if [ "$INTERACTIVE" = True ]; then
+		whiptail --msgbox "Root partition has been resized.\nThe filesystem will be enlarged upon the next reboot" 20 60 2	
+	fi
 	}
 
 changePaswd(){ ##function used to change root passwd
@@ -115,6 +107,11 @@ overClock(){
 	}
 
 about(){
+	whiptail --msgbox " Welcome to openWRT_config created by br0k3ngl255
+		This Script initial was inspired by raspi_config script for RPI devices.
+		We just have recreated it for openWRT OS and continue to upgrade it with time
+		
+	"
 	
 	}
 
