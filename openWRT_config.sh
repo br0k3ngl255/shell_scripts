@@ -13,7 +13,8 @@ userSpace(){
 	echo -e " 	export PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\#'
 			[ -x /bin/more ] || alias more=less \n
 			[ -x /usr/bin/vim ] && alias vi=vim || alias vim=vi \n
-			[ -x /bin/ls ] && alias l=ls || alias ls=l || alias ll='ls -l' ||alias 'ls -l'=ll \n
+			[ -x /bin/ls ] && alias l=ls || alias ls=l 
+			[ -x /bin/ls ] && alias ll='ls -l' ||alias 'ls -l'=ll \n
 			[ -x /usr/bin/clear ] && alias cl=clear || alias clear=cl \n
 			" >> /etc/profile
 	}
@@ -31,7 +32,7 @@ userSpace
 	}
 	
 wdth_hght(){ #implemented from raspi_config, to calc the the window size for whiptail--> openWRT doesn't have tput utility, 
-			# thus if not manully compiled for your system i have inserted value for script not to fail.
+			# thus, if not manully compiled for your system, we provided value for script not to fail.
 	WT_HEIGHT=17
 	if  [ -e /usr/bin/tput ];then
 		WT_WIDTH=$(tput cols)
@@ -66,13 +67,13 @@ expandFS(){
 		return 0
 	fi
 	
-	LAST_PART_NUM=$(parted /dev/mmcblk0 -ms unit s p | tail -n 1 | cut -f 1 -d:)
+	LAST_PART_NUM=$(parted /dev/sda -ms unit s p | tail -n 1 | cut -f 1 -d:)
 	if [ "$LAST_PART_NUM" != "$PART_NUM" ]; then
 		whiptail --msgbox "/dev/root is not the last partition. Don't know how to expand" 20 60 2
 		return 0
 	fi
 # Get the starting offset of the root partition
-	PART_START=$(parted /dev/mmcblk0 -ms unit s p | grep "^${PART_NUM}" | cut -f 2 -d:)
+	PART_START=$(parted /dev/sda -ms unit s p | grep "^${PART_NUM}" | cut -f 2 -d:)
 		[ "$PART_START" ] || return 1
 # Return value will likely be error for fdisk as it fails to reload the
 # partition table because the root fs is mounted
