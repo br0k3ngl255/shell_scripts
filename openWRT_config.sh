@@ -7,7 +7,7 @@
 
 ###Vars +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Reboot=0
-
+FREQ=""
 ###Funcs/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 userSpace(){
 	echo -e " 	export PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\#'
@@ -119,13 +119,14 @@ changePaswd(){ ##function used to change root passwd
 	}
 	
 webInterFaceChange(){
-	
+	opkg install luci-i18n-
 	}
 
 overClock(){
 	whiptail --msgbox " WARNING!!!! ensure that you have good cooling system on the cpu or it might burn the cpu " 20 60 1
-			nvram set clkfreq=
+			nvram set clkfreq=$FREQ
 			nvram commit
+			reboot
 	}
 
 about(){
@@ -138,4 +139,33 @@ about(){
 #Main-_ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ -
 ###
 
-install_prerequisites
+install_prerequisites # install needed tools
+	wdth_hght ## calculate width and height
+	
+	
+while true; do ### main loop for option choise
+query=$(whiptail --title "Raspberry Pi Software Configuration Tool (raspi-config)" \
+--menu "Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
+"1 Expand Filesystem" "Ensures that all of the SD card storage is available to the OS" \
+"2 Change User Password" "Change password for the default user (pi)" \
+"3 Enable Boot to Desktop/Scratch" "Choose whether to boot into a desktop environment, Scratch, or the command-line" \
+"4 Internationalisation Options" "Set up language and regional settings to match your location" \
+"5 Enable Camera" "Enable this Pi to work with the Raspberry Pi Camera" \
+"6 Add to Rastrack" "Add this Pi to the online Raspberry Pi Map (Rastrack)" \
+"7 Overclock" "Configure overclocking for your Pi" \
+"8 Advanced Options" "Configure advanced settings" \
+"9 About raspi-config" "Information about this configuration tool" \
+3>&1 1>&2 2>&3)
+ret_val=$?
+	if [ $ret_val -eq 1 ]; then
+		finish
+	elif [ $ret_val -eq 0 ]; then
+		case "$query" in
+			1\ *) do_expand_rootfs ;;
+
+				*) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
+		esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
+	else
+		exit 1
+	fi
+done
