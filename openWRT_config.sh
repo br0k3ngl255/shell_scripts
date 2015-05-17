@@ -6,7 +6,7 @@
 #######################################################################
 
 ###Vars +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Reboot=0
+ASK_TO_REBOOT=0
 FREQ=""
 ###Funcs/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 userSpace(){
@@ -30,6 +30,15 @@ userSpace
 		sleep 5; exit
 	fi
 	}
+	
+disable_openWRT_config_at_boot(){
+	if [ -e /etc/profile.d/openWRT_config.sh ]; then
+		rm -f /etc/profile.d/openWRT_config.sh
+		sed -i /etc/inittab -e "s/^#\(.*\)#\s*RPICFG_TO_ENABLE\s*/\1/" \
+		-e "/#\s*RPICFG_TO_DISABLE/d"
+		telinit q
+	fi
+	}	
 	
 wdth_hght(){ #implemented from raspi_config, to calc the the window size for whiptail--> openWRT doesn't have tput utility, 
 			# thus, if not manully compiled for your system, we provided value for script not to fail.
@@ -149,7 +158,17 @@ about(){
 		This Script initial was inspired by raspi_config script for RPI devices.
 		We just have recreated it for openWRT OS and continue to upgrade it with time"
 	}
-
+finish(){
+	disable_openWRT_config_at_boot
+		if [ $ASK_TO_REBOOT -eq 1 ]; then
+			whiptail --yesno "Would you like to reboot now?" 20 60 2
+				if [ $? -eq 0 ]; then # yes
+					sync	
+					reboot
+				fi
+		fi
+	exit 0
+	}
 ###
 #Main-_ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ -
 ###
@@ -162,14 +181,11 @@ while true; do ### main loop for option choise
 query=$(whiptail --title "Raspberry Pi Software Configuration Tool (raspi-config)" \
 --menu "Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
 "1 Expand Filesystem" "Ensures that all of the SD card storage is available to the OS" \
-"2 Change User Password" "Change password for the default user (pi)" \
-"3 Enable Boot to Desktop/Scratch" "Choose whether to boot into a desktop environment, Scratch, or the command-line" \
-"4 Internationalisation Options" "Set up language and regional settings to match your location" \
-"5 Enable Camera" "Enable this Pi to work with the Raspberry Pi Camera" \
-"6 Add to Rastrack" "Add this Pi to the online Raspberry Pi Map (Rastrack)" \
-"7 Overclock" "Configure overclocking for your Pi" \
-"8 Advanced Options" "Configure advanced settings" \
-"9 About raspi-config" "Information about this configuration tool" \
+"2 Change Root Password" "Change password for Root user for ssh connection" \
+"3 Internationalisation Options" "Set up Web Interface language" \
+"4 Overclock" "Configure overclocking for your Pi" \
+"5 Advanced Options" "Configure advanced settings" \
+"6 About raspi-config" "Information about this configuration tool" \
 3>&1 1>&2 2>&3)
 ret_val=$?
 	if [ $ret_val -eq 1 ]; then
