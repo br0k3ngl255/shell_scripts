@@ -185,7 +185,7 @@ query=$(whiptail --title "Raspberry Pi Software Configuration Tool (raspi-config
 "3 Internationalisation Options" "Set up Web Interface language" \
 "4 Overclock" "Configure overclocking for your Pi" \
 "5 Advanced Options" "Configure advanced settings" \
-"6 About raspi-config" "Information about this configuration tool" \
+"6 About openWRT-config" "Information about this configuration tool" \
 3>&1 1>&2 2>&3)
 ret_val=$?
 	if [ $ret_val -eq 1 ]; then
