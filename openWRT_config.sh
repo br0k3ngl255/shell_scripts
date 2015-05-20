@@ -31,7 +31,7 @@ userSpace
 		opkg update ;opkg install whiptail kmod-usb-storage block-mount kmod-fs-ext4 block-mount\
 						terminfo fdisk kmod-fs-nfs kmod-fs-ext4  libmount
 	else
-		echo  " network is not available |script will not work as needed --> exiting " 20 60 2
+		echo  " network is not available |script will not work as needed --> exiting " 
 		sleep 5; exit
 	fi
 	}
@@ -76,6 +76,7 @@ usbRootFS(){
 			whiptail --msgbox " Tere no external drives||no usb device found"
 		fi
 	}
+	
 testUsbRootFS(){
 	
 	}
@@ -113,7 +114,6 @@ about(){
 		--created by br0k3ngl255" --title "About" 20 80 10
 	}
 finish(){
-	disable_openWRT_config_at_boot
 		if [ $ASK_TO_REBOOT -eq 1 ]; then
 			whiptail --yesno "Would you like to reboot now?" 20 60 2
 				if [ $? -eq 0 ]; then # yes
@@ -123,6 +123,7 @@ finish(){
 		fi
 	exit 0
 	}
+	
 ###
 #Main-_ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ -
 ###
@@ -146,12 +147,11 @@ ret_val=$?
 	elif [ $ret_val -eq 0 ]; then
 		case "$query" in
 			1\ *) usbRootFS ;;
-			2\ *) changePaswd
-			3\ *) disable_openWRT_config_at_bootz
-			4\ *) webInterFaceChange
-			5\ *) about
-
-			  *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
+			2\ *) changePaswd ;;
+			3\ *) webInterFaceChange;;
+			4\ *) overClock ;;
+			5\ *) about ;;
+			   *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
 		esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
 	else
 		exit 1
