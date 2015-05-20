@@ -106,9 +106,9 @@ overClock(){
 	}
 
 about(){
-	whiptail --msgbox " Welcome to openWRT_config script. This Script initial was inspired by raspi_config script for RPI devices.
-		We just have recreated it for openWRT OS & continue to upgrade it with time
-		--created by br0k3ngl255"
+	whiptail --msgbox " Welcome to openWRT_config script. This Script initial was inspired by raspi_config script for RPI devices. \
+		We just have recreated it for openWRT OS & continue to upgrade it with time \n
+		--created by br0k3ngl255" --title "About" 20 80 10
 	}
 finish(){
 	disable_openWRT_config_at_boot
