@@ -34,14 +34,6 @@ userSpace
 	fi
 	}
 
-disable_openWRT_config_at_boot(){
-	if [ -e /etc/profile.d/openWRT_config.sh ]; then
-		rm -f /etc/profile.d/openWRT_config.sh
-		sed -i /etc/inittab -e "s/^#\(.*\)#\s*RPICFG_TO_ENABLE\s*/\1/" \
-		-e "/#\s*RPICFG_TO_DISABLE/d"
-		telinit q
-	fi
-	}
 
 wdth_hght(){ #implemented from raspi_config, to calc the the window size for whiptail--> openWRT doesn't have tput utility,
 			# thus, if not manully compiled for your system, we provided value for script not to fail.
@@ -60,7 +52,6 @@ wdth_hght(){ #implemented from raspi_config, to calc the the window size for whi
 		WT_MENU_HEIGHT=$(($WT_HEIGHT-7))
 	}
 
-	}
 
 usbRootFS(){
 		strgTest=$( fdisk -l |grep sda > /dev/null;echo $?)
@@ -83,6 +74,9 @@ usbRootFS(){
 			whiptail --msgbox " Tere no external drives||no usb device found"
 		fi
 	}
+testUsbRootFS(){
+	
+	}
 
 changePaswd(){ ##function used to change root passwd
 	whiptail --msgbox "You will now be asked to enter a new password for the pi user" 20 60 1
@@ -91,7 +85,17 @@ changePaswd(){ ##function used to change root passwd
 	}
 
 webInterFaceChange(){
-	opkg install luci-i18n-
+	strgTest=$( df |grep rootfs|awk '{print $2}')
+		if [ $strgTest -lt 969792 ];then
+			whiptal --alert "Not enough storage -->  please move rootfs to usb device 1st!!!"
+		else
+			netTest=$(ping -c 1 8.8.8.8 >> /dev/null;echo $?)
+			if [ "$netTest" == "0" ];then
+				opkg update;opkg  list|grep luci-i|cut -d"-" -f3
+				whiptail --msgbox " Choose requered language for your web interface support"
+				opkg install luci-i18n-
+	
+		fi
 	}
 
 overClock(){
