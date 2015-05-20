@@ -8,7 +8,7 @@
 ###Vars +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ASK_TO_REBOOT=0
 FREQ=""
-ret_val=""
+#ret_val=""
 
 ###Funcs/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 userSpace(){
@@ -156,9 +156,9 @@ overClock(){
 	}
 
 about(){
-	whiptail --msgbox " Welcome to openWRT_config created by br0k3ngl255
-		This Script initial was inspired by raspi_config script for RPI devices.
-		We just have recreated it for openWRT OS and continue to upgrade it with time"
+	whiptail --msgbox " Welcome to openWRT_config script. This Script initial was inspired by raspi_config script for RPI devices.
+		We just have recreated it for openWRT OS and continue to upgrade it with time
+		--created by br0k3ngl255"
 	}
 finish(){
 	disable_openWRT_config_at_boot
@@ -180,14 +180,14 @@ install_prerequisites # install needed tools
 
 
 while true; do ### main loop for option choise
-query=$(whiptail --title "Raspberry Pi Software Configuration Tool (raspi-config)" \
+query=$(whiptail --title "Raspberry Pi Software Configuration Tool (openWRT_config)" \
 --menu "Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
-"1 Expand Filesystem" "Ensures that all of the SD card storage is available to the OS" \
+"1 Expand Filesystem" "Ensures that all of the USB card storage is available to the OS" \
 "2 Change Root Password" "Change password for Root user for ssh connection" \
 "3 Internationalisation Options" "Set up Web Interface language" \
-"4 Overclock" "Configure overclocking for your Pi" \
+"4 Overclock" "Configure overclocking for your openWRT device" \
 "5 Advanced Options" "Configure advanced settings" \
-"6 About raspi-config" "Information about this configuration tool" \
+"6 About openWRT-config" "Information about this configuration tool" \
 3>&1 1>&2 2>&3)
 ret_val=$?
 	if [ $ret_val -eq 1 ]; then
@@ -196,7 +196,7 @@ ret_val=$?
 		case "$query" in
 			1\ *) expandFS ;;
 			2\ *) changePaswd
-			3\ *) disable_openWRT_config_at_boot
+			3\ *) disable_openWRT_config_at_bootz
 			4\ *) webInterFaceChange
 			5\ *) 
 			6\ *) about
