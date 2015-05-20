@@ -57,7 +57,7 @@ tcpDump () {
  echo "[$t]: wireshark filter is <$filter>"
  
  cmd="tcpdump $opts $filter"
- echo "[$t]: tcpdump cmd is <$cmd>"
+ echo "[$t]: tcpdump command is <$cmd>"
   
  f="/tmp/tcpdump.$t.pcap"
  echo "[$t]: tcpdump pcap file <$f>"
