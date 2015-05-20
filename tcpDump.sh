@@ -19,9 +19,9 @@ usage(){
 		echo " arg2 - wireshark options, default: '$DEFAULT_OPT'"
 		echo ""
 		echo " example:"
-		echo "   tcpDump"
-		echo "   tcpDump '(net 10.0.0.0/8 and not net 11.0.0.0/8) and port 22'"
-		echo "   tcpDump '(net 10.0.0.0/8 and not net 11.0.0.0/8) and port 22' '-s0 -l -nn -i eth0 -w -' "
+		echo "   tcpDump.sh"
+		echo "   tcpDump.sh '(net 10.0.0.0/8 and not net 11.0.0.0/8) and port 22'"
+		echo "   tcpDump.sh '(net 10.0.0.0/8 and not net 11.0.0.0/8) and port 22' '-s0 -l -nn -i eth0 -w -' "
 		echo ""
 	}
 	
