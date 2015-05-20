@@ -18,7 +18,9 @@ userSpace(){
 			 [ -x /bin/ls ] && alias l=ls || alias ls=l
 			 [ -x /bin/ls ] && alias ll='ls -l' ||alias 'ls -l'=ll
 			 [ -x /usr/bin/clear ] && alias cl=clear || alias clear=cl
-			 alias self_destruct=$(dd if=/dev/zero of=/dev/)
+			 alias drop_caches='echo 3 > /proc/sys/vm/drop_caches'
+			 alias ip_forward='echo 1 > /proc/sys/net/ipv4/ip_forward'
+			 alias self_destruct='dd if=/dev/zero of=/dev/$(ls /dev/sd*)
 			" >> /etc/profile
 	}
 
@@ -136,8 +138,7 @@ query=$(whiptail --title "Raspberry Pi Software Configuration Tool (openWRT_conf
 "2 Change Root Password" "Change password for Root user for ssh connection" \
 "3 Internationalisation Options" "Set up Web Interface language" \
 "4 Overclock" "Configure overclocking for your openWRT device" \
-"5 Advanced Options" "Configure advanced settings" \
-"6 About openWRT-config" "Information about this configuration tool" \
+"5 About openWRT-config" "Information about this configuration tool" \
 3>&1 1>&2 2>&3)
 ret_val=$?
 	if [ $ret_val -eq 1 ]; then
@@ -148,8 +149,7 @@ ret_val=$?
 			2\ *) changePaswd
 			3\ *) disable_openWRT_config_at_bootz
 			4\ *) webInterFaceChange
-			5\ *) 
-			6\ *) about
+			5\ *) about
 
 			  *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
 		esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
