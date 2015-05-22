@@ -71,9 +71,9 @@ usbRootFS(){
 					config 'swap'
 						option  device  '/dev/sda2'
 						option  enabled '1" >> /etc/config/fstab
-			whiptail --msgbox " Moved all the data to usb & need to reboot to complete "
+			whiptail --msgbox " Moved all the data to usb & need to reboot to complete " 20 60 1
 		else
-			whiptail --msgbox " Tere no external drives||no usb device found"
+			whiptail --msgbox " Tere no external drives||no usb device found" 20 60 1
 		fi
 	}
 	
@@ -90,20 +90,21 @@ changePaswd(){ ##function used to change root passwd
 webInterFaceChange(){
 	strgTest=$( df |grep rootfs|awk '{print $2}')
 		if [ $strgTest -lt 969792 ];then
-			whiptal --alert "Not enough storage -->  please move rootfs to usb device 1st!!!"
+			whiptal --alert "Not enough storage -->  please move rootfs to usb device 1st!!!" 20 60 1
 		else
 			netTest=$(ping -c 1 8.8.8.8 >> /dev/null;echo $?)
 			if [ "$netTest" == "0" ];then
 				opkg update;opkg  list|grep luci-i|cut -d"-" -f3
-				whiptail --msgbox " Choose requered language for your web interface support"
+				whiptail --msgbox " Choose requered language for your web interface support" 20 60 1
 				opkg install luci-i18n-
 	
 		fi
 	}
 
 overClock(){
-	whiptail --msgbox " WARNING!!!! ensure that you have good cooling system on the cpu or it might burn the cpu " 20 60 1
-			nvram set clkfreq=$FREQ
+	whiptail --title " !!!!WARNING!!!!" --msgbox " ensure that you have good cooling system on the cpu or it might burn the cpu " 20 60 1
+			--nocancel  
+			nvram set clkfreq=225,113
 			nvram commit
 			reboot
 	}
@@ -111,7 +112,7 @@ overClock(){
 about(){
 	whiptail --msgbox " Welcome to openWRT_config script. This Script initial was inspired by raspi_config script for RPI devices. \
 		We just have recreated it for openWRT OS & continue to upgrade it with time \n
-		--created by br0k3ngl255" --title "About" 20 80 10
+		--created by br0k3ngl255" --title "About" 20 60 10
 	}
 finish(){
 		if [ $ASK_TO_REBOOT -eq 1 ]; then
