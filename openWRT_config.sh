@@ -94,11 +94,35 @@ webInterFaceChange(){
 		else
 			netTest=$(ping -c 1 8.8.8.8 >> /dev/null;echo $?)
 			if [ "$netTest" == "0" ];then
-				opkg update;opkg  list|grep luci-i|cut -d"-" -f3
-				whiptail --msgbox " Choose requered language for your web interface support" 20 60 1
-				opkg install luci-i18n-
+				#opkg update;opkg  list|grep luci-i|cut -d"-" -f3
+				whiptail --checklist  --separate-output " Choose requered language for your web interface support" 30 80 20 \
+						catalan "catalan"  off \
+						chinese "chinese" off \
+						english "english"  on \
+						french "french"  off \
+						german "german"  off \
+						greek "greek"    off \
+						hebrew "hebrew"   off \
+						hungarian "hungarian"   off \
+						italian "italian"  off \
+						japanese "japanese"  off \
+						malay "malay"   off \
+						norwegian "norwegian"  off \
+						polish  "polish" off \
+						portuguese "portuguese"  off \
+						portuguese "portuguese"  off \
+						romanian "romanian"  off \
+						russian "russian"  off \
+						spanish "spanish"  off \
+						ukrainian "ukrainian"  off \
+						vietnamese "vietnamese"  off  2> langList.txt
+				
+				for i in $(cat langList.txt);do 
+					opkg install luci-i18n-$i
+				done
 	
 		fi
+	fi
 	}
 
 overClock(){
