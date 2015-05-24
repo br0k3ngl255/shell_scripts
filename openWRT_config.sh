@@ -98,7 +98,7 @@ webInterFaceChange(){
 				whiptail --checklist  --separate-output " Choose requered language for your web interface support" 30 80 20 \
 						catalan "catalan"  off \
 						chinese "chinese" off \
-						english "english"  on \
+						english "english"  off \
 						french "french"  off \
 						german "german"  off \
 						greek "greek"    off \
@@ -118,7 +118,7 @@ webInterFaceChange(){
 						vietnamese "vietnamese"  off  2> langList.txt
 				
 				for i in $(cat langList.txt);do 
-					opkg install luci-i18n-$i
+					opkg install  luci luci-i18n-$i
 				done
 	
 		fi
@@ -127,10 +127,11 @@ webInterFaceChange(){
 
 overClock(){
 	whiptail --title " !!!!WARNING!!!!" --msgbox " ensure that you have good cooling system on the cpu or it might burn the cpu " 20 60 1
-			--nocancel  
+			
 			nvram set clkfreq=225,113
 			nvram commit
-			reboot
+			ASK_TO_REBOOT=1
+			finish
 	}
 
 about(){
