@@ -77,9 +77,6 @@ usbRootFS(){
 		fi
 	}
 	
-testUsbRootFS(){
-	
-	}
 
 changePaswd(){ ##function used to change root passwd
 	whiptail --msgbox "You will now be asked to enter a new password for the pi user" 20 60 1
