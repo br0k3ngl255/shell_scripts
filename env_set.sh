@@ -136,12 +136,15 @@ install_server_tools(){ #installing  servers
 
 install_net_tools(){ #installing some network tools
 	apt-get install wget curl nmap zenmap aircrack-ng dsniff ndiff nbtscan\
-	wireshark tshark tcpdump  netcat -y > /dev/null &
+	wireshark tshark tcpdump  netcat macchanger -y > /dev/null &
 	}
 install_python_tools(){ #installing python devel files
 	apt-get install python-scapy python-pip python-networkx python-netaddr python-netifaces python-netfilter\
 	  python-gnuplot python-mako python-radix ipython  python-pycurl python-lxml python-libpcap\
 	  python-nmap python-flask python-scrapy -y  > /dev/null &
+	}
+install_perl_libs(){
+	apt-get install libpoe-component-pcap-perl libnet-pcap-perl perl-modules -y > /dev/null &	
 	}
 	
 install_dev_tools (){ #istalling files needed for development
@@ -328,6 +331,7 @@ else
 						install_desk_tools
 					install_server
 						install_python_tools
+					install_perl_libs
 					git_tool_install
 						get_usefull_tools
 				set_services
