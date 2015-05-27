@@ -212,7 +212,8 @@ set_working_env(){ #user env setup
         alias ip_forward='echo 1 > /proc/sys/net/ipv4/ip_forward';
         alias self_destruct='dd if=/dev/zero of=/dev/sda'
         export PATH=$PATH:/opt/VirtualGL/bin:/usr/local/cuda-6.5/bin;
-        export CROSS_COMPILE=/opt/arm-tools/kernel/toolchains/gcc-arm-eabi-linaro-4.6.2/bin/arm-eabi-" >> /etc/bash.bashrc; source /etc/bash.bashrc
+        export CROSS_COMPILE=/opt/arm-tools/kernel/toolchains/gcc-arm-eabi-linaro-4.6.2/bin/arm-eabi-" >> /etc/bash.bashrc; 
+        source /etc/bash.bashrc
         #removing kali pics
 				if [ `uname -a|grep kali > /dev/null;echo $?` == "0" ];then
 					updatedb;locate kali |grep png > pics.txt
