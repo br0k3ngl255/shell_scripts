@@ -1,5 +1,5 @@
 #!/usr/bin/env bash 
-set -x
+
 ########################################################################
 #Purpose : 
 ########################################################################
@@ -178,8 +178,6 @@ set_services(){ #need to disable unneeded services for systems fast boot
 	update-rc.d rc.local remove;update-rc.d umountroot remove;update-rc.d rsyslog remove;
 	update-rc.d kbd remove;update-rc.d nfs-common remove;
 	update-rc.d bluetooth remove;update-rc.d exim4 remove;update-rc.d cron remove;
-	
-	
 	}
 
 git_tool_install(){ #downloading some files
