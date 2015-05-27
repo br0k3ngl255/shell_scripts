@@ -1,2 +1,2 @@
-# bash_script
-useful tips and tricks in bash scripting
+# shell_scripts
+useful tips and tricks in different shell scripting
