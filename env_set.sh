@@ -327,7 +327,7 @@ else
 				sleep 5
 					update_upgrade
 						install_desk_tools
-					install_server
+					install_server_tools
 						install_python_tools
 					install_perl_libs
 					git_tool_install
