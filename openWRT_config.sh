@@ -1,4 +1,5 @@
 #!/bin/sh
+##TODO ---> support fot 15.05
 #######################################################################
 #Created by : br0k3ngl255
 #Inspired by : Alex Bradbury|asb --> raspi_config script creator
