@@ -12,6 +12,12 @@ FREQ=""
 #ret_val=""
 
 ###Funcs/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+version_test(){
+	vrsn=`cat /etc/openwrt_version |cut -d"-" -f1`
+	if [ "$vrsb" != "14.07" ] ||[ "$vrsn" != "12.09" ];then
+		echo "NOT SUPPORTED"
+	fi
+	}
 userSpace(){
 	echo -e "export PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\#'
 			 [ -x /bin/more ] || alias more=less
@@ -152,8 +158,9 @@ finish(){
 #Main-_ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ -
 ###
 
-install_prerequisites # install needed tools
-	wdth_hght ## calculate width & height
+version_test
+	install_prerequisites # install needed tools
+		wdth_hght ## calculate width & height
 
 
 while true; do ### main loop for option choise
