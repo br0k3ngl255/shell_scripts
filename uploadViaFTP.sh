@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+#set -x 
+##############################################################################
+#Ftp upload automation for cron schedular. 
+#Created by br0k3ngl255
+##############################################################################
+
+##Vars _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+logFolder='/var/log/'
+DATE=`date +%Y-%m-%d`
+##Funcs  + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+usage(){
+	echo "Wrong use"
+	echo ": "
+	echo "uploadViaFTP.sh -I MyFTPServer.com -F destination server -U FTPuser -P FTPpassword"
+	}
+gatherLogs(){ #gather all the needed files in to array send them 
+		log_arr[0]=/var/log/alternatives.log
+		log_arr[1]=/var/log/mysql.err
+		log_arr[2]=/var/log/dmesg
+		log_arr[3]=/var/log/auth.log
+		#lod_arr[4]=/PATH/TO/FOLDER/OR/FILE/
+			for i in $log_arr  #compress all the files
+				do
+					echo ${log_arr} >> logs_arr_list$$
+				done
+					tar cfz   SystemLog_$DATE.tar.gz  "${log_arr[@]}"
+					mv SystemLog_$DATE.tar.gz /tmp
+					rm logs_arr_list$$
+}
+###
+#Main _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ 
+###
+
+while getopts "I:F:U:P:" OPTIONS; do
+   case ${OPTIONS} in
+      I ) ip=$OPTARG;;
+      F ) folder=$OPTARG;;
+	  U ) user=$OPTARG;;
+	  P ) password=$OPTARG ;;
+      * ) echo "Unknown option.";;   # Default
+   esac
+done
+
+if [ ];then
+	usage
+	
+fi 
+gatherLogs
+
+ftp -in <<EOF
+open $ip
+user $user $password
+cd /home/$user
+lcd /tmp
+put piranha_$now.tar.gz
+close 
+bye
+EOF
