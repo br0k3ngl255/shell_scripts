@@ -34,19 +34,20 @@ gatherLogs(){ #gather all the needed files in to array send them
 #Main _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ 
 ###
 
-while getopts "I:F:U:P:" OPTIONS; do
+while getopts "I:F:U:P:h:H" OPTIONS; do
    case ${OPTIONS} in
       I ) ip=$OPTARG;;
       F ) folder=$OPTARG;;
-	  U ) user=$OPTARG;;
-	  P ) password=$OPTARG ;;
-      * ) echo "Unknown option.";;   # Default
+      U ) user=$OPTARG;;
+      P ) password=$OPTARG ;;
+      h|H) usage;;
+      * ) usage;;   # Default
    esac
 done
 
-if [ ];then
+if [[ -z $ip ]] || [[ -z $user ]] || [[ -z $passwd ]];then
 	usage
-	
+	exit
 fi 
 gatherLogs
 
