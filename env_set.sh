@@ -37,7 +37,7 @@ REPO=""
 USER="mobius" ### place your user name here
 PASSWD="1"         ### palce your passwd here
 
-#########Funcs +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#########Funcs ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ###
 insert_repo(){ # case statement to choose between DEbian and KAli
 		###TODO - add ubuntu
