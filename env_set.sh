@@ -1,7 +1,7 @@
 #!/usr/bin/env bash 
 
 ########################################################################
-#Purpose : 
+#Purpose : putting(back my) working dev station
 ########################################################################
 #Copyright (c) <2014-2015>, <LinuxSystems LTD>
 #All rights reserved.
