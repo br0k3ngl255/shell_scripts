@@ -1,8 +1,8 @@
 #!/usr/bin/env bash 
 
-########################################################################
+#######################################################################
 #Purpose : putting(back my) working dev station
-########################################################################
+#######################################################################
 #Copyright (c) <2014-2015>, <LinuxSystems LTD>
 #All rights reserved.
 #Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,8 @@ deb http://security.kali.org/kali-security kali/updates main contrib non-free
 deb-src http://security.kali.org/kali-security kali/updates main contrib non-free
 
 #out src
-	
+deb http://http.debian.net/debian wheezy-backports main
+deb http://ftp.debian.org/debian/ wheezy-backports main non-free contrib	
 " >  /etc/apt/sources.list
 ;;
 		Debian)	echo " 
