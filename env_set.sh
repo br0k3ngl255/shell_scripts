@@ -322,22 +322,32 @@ else
 	test_env
 		usr_sts=`cat /etc/passwd|grep -v grep |grep $USER > /dev/null ;echo $?`
 			if [ "$user_sts" != "0" ];then 
+				clear
 				set_working_env
 			fi
+				clear
 				net_connect
 				sleep 5
-					update_upgrade
-						install_desk_tools
-					install_server_tools
-						install_python_tools
-					install_perl_libs
-					git_tool_install
-						get_usefull_tools
-				set_services
+				clear
+					update_upgrade;clear
+						echo "installing desk enviorentment" ;install_desk_tools;clear
+					echo "installing servers ";install_server_tools;clear
+						echo "installing python modules";install_python_tools;clear
+					echo "installing perl modules";install_perl_libs;clear
+					echo "clone tools from git";git_tool_install;clear
+						echo "3rdparty tools";get_usefull_tools;clear
+				echo "setting initial services";set_services;clear
 				gui_card_test=`lspci |grep VGA|grep NVIDIA >> /dev/null ;echo $`
 					if [ "$gui_card_test" == "0" ];then
-						Nvidia_optimus
-							Nvidia_primus_config
+						clear
+							echo "getting libs for NVIDIA support";Nvidia_optimus;clear
+							echo "setting NVIDIA config";Nvidia_primus_config;clear
 					fi
-			
-fi
+			echo " finished"
+		read -p " would you like to to reboot?(Y/n)" ans
+			if [ "$ans" == "Y" ] || [ "$ans" == "y" ];then
+				echo "REBOOTING ..." ;sleep 3; reboot
+			else
+				exit 1
+			fi
+fi	
