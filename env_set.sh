@@ -1,8 +1,8 @@
 #!/usr/bin/env bash 
 
-#######################################################################
-#Purpose : putting(back my) working dev station
-#######################################################################
+########################################################################
+#Purpose : 
+########################################################################
 #Copyright (c) <2014-2015>, <LinuxSystems LTD>
 #All rights reserved.
 #Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@ REPO=""
 USER="mobius" ### place your user name here
 PASSWD="1"         ### palce your passwd here
 
-#########Funcs ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#########Funcs +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ###
 insert_repo(){ # case statement to choose between DEbian and KAli
 		###TODO - add ubuntu
@@ -47,20 +47,21 @@ insert_repo(){ # case statement to choose between DEbian and KAli
 
 		Kali) echo "
 ##Main
-deb http://http.kali.org/ /kali main contrib non-free
-deb http://http.kali.org/ /wheezy main contrib non-free
+#Regular repositories
+deb http://http.kali.org/kali kali main non-free contrib
+deb http://security.kali.org/kali-security kali/updates main contrib non-free
+## Source repositories
+deb-src http://http.kali.org/kali kali main non-free contrib
+deb-src http://security.kali.org/kali-security kali/updates main contrib non-fre
+##Devel
+#deb-src http://http.kali.org/kali kali-dev main contrib non-free
 #deb http://http.kali.org/kali kali-dev main contrib non-free
 #deb http://http.kali.org/kali kali-dev main/debian-installer
-#deb-src http://http.kali.org/kali kali-dev main contrib non-free
-deb http://http.kali.org/kali kali main contrib non-free
-deb http://http.kali.org/kali kali main/debian-installer
-deb-src http://http.kali.org/kali kali main contrib non-free
-deb http://security.kali.org/kali-security kali/updates main contrib non-free
-deb-src http://security.kali.org/kali-security kali/updates main contrib non-free
-
-#out src
+##Out src
 deb http://http.debian.net/debian wheezy-backports main
-deb http://ftp.debian.org/debian/ wheezy-backports main non-free contrib	
+deb http://ftp.debian.org/debian/ wheezy-backports main non-free contrib
+
+	
 " >  /etc/apt/sources.list
 ;;
 		Debian)	echo " 
@@ -157,9 +158,10 @@ install_dev_tools (){ #istalling files needed for development
            wget libsqlite3-dev libhiredis-dev libgeoip-dev debootstrap qemu-user-static\
            device-tree-compiler lzma lzop u-boot-tools pixz dkms git-core gnupg flex bison gperf libesd0-dev\
 	       zip curl libncurses5-dev zlib1g-dev gcc-multilib g++-multilib libusb-1.0-0 libusb-1.0-0-dev fakeroot\
-	       kernel-package zlib1g-dev -y > /dev/null &
+	       kernel-package zlib1g-dev devscripts pbuilder dh-make  -y > /dev/null &
           #ps_status apt-get
 }
+
 
 set_services(){ #need to disable unneeded services for systems fast boot
 	echo "removing unNeeded ServIce5"
@@ -213,7 +215,7 @@ set_working_env(){ #user env setup
         alias ip_forward='echo 1 > /proc/sys/net/ipv4/ip_forward';
         alias self_destruct='dd if=/dev/zero of=/dev/sda'
         export PATH=$PATH:/opt/VirtualGL/bin:/usr/local/cuda-6.5/bin;
-        export CROSS_COMPILE=/opt/arm-tools/kernel/toolchains/gcc-arm-eabi-linaro-4.6.2/bin/arm-eabi-" >> /etc/bash.bashrc; 
+        export CROSS_COMPILE=/opt/arm-tools/kernel/toolchains/gcc-arm-eabi-linaro-4.6.2/bin/arm-eabi-" >> /etc/bash.bashrc;
         source /etc/bash.bashrc
         #removing kali pics
 				if [ `uname -a|grep kali > /dev/null;echo $?` == "0" ];then
@@ -323,32 +325,22 @@ else
 	test_env
 		usr_sts=`cat /etc/passwd|grep -v grep |grep $USER > /dev/null ;echo $?`
 			if [ "$user_sts" != "0" ];then 
-				clear
 				set_working_env
 			fi
-				clear
 				net_connect
 				sleep 5
-				clear
-					update_upgrade;clear
-						echo "installing desk enviorentment" ;install_desk_tools;clear
-					echo "installing servers ";install_server_tools;clear
-						echo "installing python modules";install_python_tools;clear
-					echo "installing perl modules";install_perl_libs;clear
-					echo "clone tools from git";git_tool_install;clear
-						echo "3rdparty tools";get_usefull_tools;clear
-				echo "setting initial services";set_services;clear
+					update_upgrade
+						install_desk_tools
+					install_server_tools
+						install_python_tools
+					install_perl_libs
+					git_tool_install
+						get_usefull_tools
+				set_services
 				gui_card_test=`lspci |grep VGA|grep NVIDIA >> /dev/null ;echo $`
 					if [ "$gui_card_test" == "0" ];then
-						clear
-							echo "getting libs for NVIDIA support";Nvidia_optimus;clear
-							echo "setting NVIDIA config";Nvidia_primus_config;clear
+						Nvidia_optimus
+							Nvidia_primus_config
 					fi
-			echo " finished"
-		read -p " would you like to to reboot?(Y/n)" ans
-			if [ "$ans" == "Y" ] || [ "$ans" == "y" ];then
-				echo "REBOOTING ..." ;sleep 3; reboot
-			else
-				exit 1
-			fi
-fi	
+			
+fi
