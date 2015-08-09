@@ -128,6 +128,8 @@ install_desk_tools(){ #installing desktop/documentation files.
 	apt-get install lightdm mate-desktop-environment-extras firmware-realtek\
 	firmware-linux firmware-linux-free firmware-linux-nonfree vlc libreoffice\
 	u-boot-tools uboot-mkimage gparted abiword transmission guake mixxx\
+	culmus xfonts-efont-unicode xfonts-efont-unicode-ib xfonts-intl-european\
+	msttcorefonts
 	 -y > /dev/null &
 	}
 	
@@ -330,13 +332,12 @@ else
 			fi
 				net_connect
 				sleep 5
-					update_upgrade
+					update_upgrade; get_usefull_tools &
 						install_desk_tools
 					install_server_tools
 						install_python_tools
 					install_perl_libs
 					git_tool_install
-						get_usefull_tools
 				set_services
 				gui_card_test=`lspci |grep VGA|grep NVIDIA >> /dev/null ;echo $`
 					if [ "$gui_card_test" == "0" ];then
