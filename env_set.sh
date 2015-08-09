@@ -260,9 +260,9 @@ Nvidia_primus_config(){ #some nvidia optimus configurations
 Nvidia_optimus(){ #downloading Nvidia optimus files for later installation - if exists of course
 	cd /tmp 
 	
-	wget http://downloads.sourceforge.net/project/virtualgl/2.4/virtualgl_2.4_amd64.deb &
-	wget http://us.download.nvidia.com/XFree86/Linux-x86_64/346.47/NVIDIA-Linux-x86_64-346.47.run &
-	wget http://developer.download.nvidia.com/compute/cuda/6_5/rel/installers/cuda_6.5.14_linux_64.run &
+	wget http://downloads.sourceforge.net/project/virtualgl/2.4/virtualgl_2.4_amd64.deb &  > /dev/null 2> /dev/null
+	wget http://us.download.nvidia.com/XFree86/Linux-x86_64/346.47/NVIDIA-Linux-x86_64-346.47.run &   > /dev/null 2> /dev/null
+	wget http://developer.download.nvidia.com/compute/cuda/6_5/rel/installers/cuda_6.5.14_linux_64.run &  > /dev/null 2> /dev/null
 	ps_status wget
 		
 		 if [ `ls -l  > /dev/null;echo $?` == "0" ];then
@@ -281,11 +281,12 @@ get_usefull_tools(){ #downloadinf manually usefull software.
                         mkdir /home/$USER/Downloads
          fi  
            cd /home/$USER/Downloads
-                    wget http://download.teamviewer.com/download/teamviewer_amd64.deb  &
-                    wget http://kdl.cc.ksosoft.com/wps-community/download/a16/wps-office_9.1.0.4945~a16p3_i386.deb &
-                    wget -O skype-install.deb http://www.skype.com/go/getskype-linux-deb &
+				echo " downloading manual files to install "
+                    wget http://download.teamviewer.com/download/teamviewer_amd64.deb  &  > /dev/null 2> /dev/null
+                    wget http://kdl.cc.ksosoft.com/wps-community/download/a16/wps-office_9.1.0.4945~a16p3_i386.deb &  > /dev/null 2> /dev/null
+                    wget -O skype-install.deb http://www.skype.com/go/getskype-linux-deb &  > /dev/null 2> /dev/null
                ps_status wget 
-                    wget https://geany-vibrant-ink-theme.googlecode.com/files/vibrant_ink_geany_filedefs_20111207.zip
+                    wget https://geany-vibrant-ink-theme.googlecode.com/files/vibrant_ink_geany_filedefs_20111207.zip  > /dev/null 2> /dev/null
                ps_status dpkg          
                    dpkg -i *deb
 						apt-get install -f -y > /dev/null &
