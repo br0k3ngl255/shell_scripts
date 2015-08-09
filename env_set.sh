@@ -338,12 +338,12 @@ else
 					install_server_tools
 						install_python_tools
 					install_perl_libs
-					git_tool_install
+						git_tool_install
 				set_services
-				gui_card_test=`lspci |grep VGA|grep NVIDIA >> /dev/null ;echo $`
-					if [ "$gui_card_test" == "0" ];then
-						Nvidia_optimus
-							Nvidia_primus_config
-					fi
+					gui_card_test=`lspci |grep VGA|grep NVIDIA >> /dev/null ;echo $`
+						if [ "$gui_card_test" == "0" ];then
+							Nvidia_optimus
+								Nvidia_primus_config
+						fi
 			
 fi
