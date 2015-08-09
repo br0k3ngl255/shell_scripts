@@ -175,9 +175,10 @@ set_services(){ #need to disable unneeded services for systems fast boot
 	update-rc.d thin remove;update-rc.d atd remove;update-rc.d kbd remove;
 	update-rc.d nfs-common remove;update-rc.d stunnel4 remove; update-rc.d bluetooth remove; 
 	update-rc.d saned remove;update-rc.d speech-dispatcher remove;
-	update-rc.d rpcbind remove;update-rc.d acpid remove;update-rc.d avahi-daemon remove;update-rc.d cups remove;update-rc.d rsync remove;
+	update-rc.d rpcbind remove;update-rc.d acpid remove;update-rc.d avahi-daemon remove;
+	update-rc.d cups remove;update-rc.d rsync remove;
 	update-rc.d ntop remove;update-rc.d saned remove;update-rc.d procps remove;update-rc.d saned remove;
-	update-rc.d acpi-fakekey remove;update-rc.d network-manager remove;update-rc.d cpufrequtils remove;
+	update-rc.d acpi-fakekey remove;update-rc.d cpufrequtils remove;
 	update-rc.d binfmt-support remove;update-rc.d anacron remove;update-rc.d redis-server remove;
 	update-rc.d minissdpd remove;update-rc.d rcS remove;update-rc.d postgresql remove;
 	update-rc.d rc.local remove;update-rc.d umountroot remove;update-rc.d rsyslog remove;
