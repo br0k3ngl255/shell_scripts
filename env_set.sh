@@ -42,6 +42,7 @@ KODENAME=`lsb_release -sc`
 OS=`lsb_release -si`
 ARCH=`uname -m`
 VERSION=`lsb_release -sr`
+INSTALL_MNGR=''
 #########Funcs +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ###
 insert_repo(){ # case statement to choose between DEbian and KAli
