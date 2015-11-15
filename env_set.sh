@@ -90,7 +90,16 @@ ps_sts=`ps aux |grep -v grep|grep $PSS > /dev/null ;echo $?`
                         fi
                 done
         }
-
+get_install_manager(){
+if [ $OS == "Debian" ];then
+    INSTALL_MNGR="apt-get'
+elif [ $OS == "RedHat" ];then
+    INSTALL_MNGR="yum"
+else
+    echo "install manager not supported --> will exit"
+        exit1
+fi
+}
 update_upgrade(){ # designed for 64 bit systems that need  32 bit support.
         echo " Upgrading"
                 ps_status apt-get
