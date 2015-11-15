@@ -1,7 +1,7 @@
 #!/usr/bin/env bash 
 
 ########################################################################
-#Purpose : 
+#Purpose : automating dev and proper working environment  installation
 ########################################################################
 #Copyright (c) <2014-2015>, <LinuxSystems LTD>
 #All rights reserved.
@@ -27,17 +27,21 @@
 #(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 #SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ########################################################################
-#!!!!!!!!!!!!!!!!!!!!!!!!!TODO --> add uspport for RPM systems
+#!!!!!!!!!!!!!!!!!!!!!!!!!TODO --> add uspport for RPM systems!!!!!!!!!!!!!!!!!!!!!!!!1
+####will change format with python later.
 	#Add support for servers : ssh,nfs,samba,ftp,web,sql,ldap,dovecot,postfix -->
 			#add others if needed --> might need automation and embedded to create config files
 		#Add option for display management change --> lightdm with mate or any other.
-		   
+
 ##vars : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : :
 REPO=""
 USER="mobius" ### place your user name here
 PASSWD="1"         ### palce your passwd here
-REPONAME="debian"
-KODENAME="jessie"
+REPONAME=`lsb_release -si`
+KODENAME=`lsb_release -sc`
+OS=`lsb_release -si`
+ARCH=`uname -m`
+VERSION=`lsb_release -sr`
 #########Funcs +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ###
 insert_repo(){ # case statement to choose between DEbian and KAli
@@ -62,6 +66,8 @@ deb ftp://ftp.$REPONAME.org/$REPONAME stable main contrib non-free
 deb http://http.$REPONAME.net/$REPONAME $KODENAME-backports main
 deb http://ftp.$REPONAME.org/$REPONAME/ $KODENAME-backports main non-free contrib
 " > /etc/apt/sources.list
+echo 'deb http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_7.0/ /' >> /etc/apt/sources.list.d/owncloud-client.list
+echo "deb http://download.virtualbox.org/virtualbox/debian jessie contrib" >> /etc/apt/sources.list
 ;;
 		*) echo "Error getting Repo";exit 1 ;;
 
@@ -186,14 +192,20 @@ git_tool_install(){ #downloading some files
 			fi
 		fi
 	fi
-		
+
 	}
 
 set_working_env(){ #user env setup
-    
+
         useradd -m -p `mkpasswd "$PASSWD"` -s /bin/bash -G adm,sudo,www-data,root $USER
 #       echo $PASSWD|passwd $USER --stdin
+        sed s/PS1/#PS1/ /etc/bash.bashrc
         ##creating aliases
+        echo "if [ $UID == "0" ];then
+                    PS1='\[\e[0;31m\]\u\[\e[m\] \[\e[1;34m\]\w\[\e[m\] \[\e[0;31m\]\$ \[\e[m\]\[\e[0;32m\]'
+               else
+                    PS1='\[\e[0;32m\]\u\[\e[m\] \[\e[1;34m\]\w\[\e[m\] \[\e[1;32m\]\$\[\e[m\] \[\e[1;37m\]'
+                fi" >> /etc/bash.bashrc
         echo "alias l=ls; alias ll='ls -l'; alias la='ls -la';alias lh='ls -lh'
         alias more=less; alias vi=vim; alias cl=clear; alias mv='mv -v'; alias cp='cp -v'; 
         alias log='cd /var/log'; alias drop_caches='echo 3 > /proc/sys/vm/drop_caches';
