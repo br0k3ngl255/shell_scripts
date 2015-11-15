@@ -332,7 +332,7 @@ if [ $UID != 0 ];then
 else
 	test_env
 		usr_sts=`cat /etc/passwd|grep -v grep |grep $USER > /dev/null ;echo $?`
-		get_
+		    get_install_manager
 			if [ "$user_sts" != "0" ];then
 
 				set_working_env
