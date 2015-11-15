@@ -92,13 +92,13 @@ ps_sts=`ps aux |grep -v grep|grep $PSS > /dev/null ;echo $?`
                 done
         }
 get_install_manager(){
-if [ $OS == "Debian" ];then
+if [ "$OS" == "Debian" ];then
     INSTALL_MNGR="apt-get'
 elif [ $OS == "RedHat" ];then
     INSTALL_MNGR="yum"
 else
     echo "install manager not supported --> will exit"
-        exit1
+        exit 1
 fi
 }
 update_upgrade(){ # designed for 64 bit systems that need  32 bit support.
@@ -332,7 +332,9 @@ if [ $UID != 0 ];then
 else
 	test_env
 		usr_sts=`cat /etc/passwd|grep -v grep |grep $USER > /dev/null ;echo $?`
-			if [ "$user_sts" != "0" ];then 
+		get_
+			if [ "$user_sts" != "0" ];then
+
 				set_working_env
 			fi
 				net_connect
