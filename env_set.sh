@@ -36,7 +36,8 @@
 REPO=""
 USER="mobius" ### place your user name here
 PASSWD="1"         ### palce your passwd here
-
+REPONAME="debian"
+KODENAME="jessie"
 #########Funcs +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ###
 insert_repo(){ # case statement to choose between DEbian and KAli
@@ -45,44 +46,25 @@ insert_repo(){ # case statement to choose between DEbian and KAli
 	op=$1
 	case $op in
 
-		Kali) echo "
-##Main
-#Regular repositories
-deb http://http.kali.org/kali kali main non-free contrib
-deb http://security.kali.org/kali-security kali/updates main contrib non-free
-## Source repositories
-deb-src http://http.kali.org/kali kali main non-free contrib
-deb-src http://security.kali.org/kali-security kali/updates main contrib non-fre
-##Devel
-#deb-src http://http.kali.org/kali kali-dev main contrib non-free
-#deb http://http.kali.org/kali kali-dev main contrib non-free
-#deb http://http.kali.org/kali kali-dev main/debian-installer
-##Out src
-deb http://http.debian.net/debian wheezy-backports main
-deb http://ftp.debian.org/debian/ wheezy-backports main non-free contrib
-
-	
-" >  /etc/apt/sources.list
-;;
-		Debian)	echo " 
+		$REPONAME)	echo "
 ##MAIN
-deb http://http.debian.net/debian wheezy main
-deb-src http://http.debian.net/debian wheezy main
+deb http://http.$REPONAME.net/$REPONAME $KODENAME main
+deb-src http://http.$REPONAME.net/$REPONAME $KODENAME main
 
-deb http://http.debian.net/debian wheezy-updates main
-deb-src http://http.debian.net/debian wheezy-updates main
+deb http://http.$REPONAME.net/$REPONAME $KODENAME-updates main
+deb-src http://http.$REPONAME.net/$REPONAME $KODENAME-updates main
 
-deb http://security.debian.org/ wheezy/updates main
-deb-src http://security.debian.org/ wheezy/updates main
+deb http://security.$REPONAME.org/ $KODENAME/updates main
+deb-src http://security.$REPONAME.org/ $KODENAME/updates main
 
-deb ftp://ftp.debian.org/debian stable main contrib non-free
+deb ftp://ftp.$REPONAME.org/$REPONAME stable main contrib non-free
 ###BackPort
-deb http://http.debian.net/debian wheezy-backports main
-deb http://ftp.debian.org/debian/ wheezy-backports main non-free contrib   
+deb http://http.$REPONAME.net/$REPONAME $KODENAME-backports main
+deb http://ftp.$REPONAME.org/$REPONAME/ $KODENAME-backports main non-free contrib
 " > /etc/apt/sources.list
 ;;
 		*) echo "Error getting Repo";exit 1 ;;
-		
+
 esac
 	}
 
@@ -113,7 +95,7 @@ update_upgrade(){ # designed for 64 bit systems that need  32 bit support.
         apt-get dist-upgrade -y > /dev/null 2> /dev/null &
                  ps_status apt-get
 #       process_wait apt-get
-		if [ "`uname -m`" == "x86_64" ];then 
+		if [ "`uname -m`" == "x86_64" ];then
           echo " adding support 4 32Bit"
               dpkg --add-architecture i386
                  apt-get update > /dev/null 2> /dev/null &
@@ -132,7 +114,7 @@ install_desk_tools(){ #installing desktop/documentation files.
 	msttcorefonts
 	 -y > /dev/null &
 	}
-	
+
 install_server_tools(){ #installing  servers
 	apt-get install sqlite sqlite3 mysql-client mysql-server postgresql\
 	 apache2 nginx-full nfs-common samba-common redis-server sysv-rc-conf -y > /dev/null &
@@ -148,9 +130,9 @@ install_python_tools(){ #installing python devel files
 	  python-nmap python-flask python-scrapy -y  > /dev/null &
 	}
 install_perl_libs(){
-	apt-get install libpoe-component-pcap-perl libnet-pcap-perl perl-modules -y > /dev/null &	
+	apt-get install libpoe-component-pcap-perl libnet-pcap-perl perl-modules -y > /dev/null &
 	}
-	
+
 install_dev_tools (){ #istalling files needed for development
         apt-get install geany linux-image-`uname -r` linux-headers-`uname -r `  build-essential debhelper\
            cmake bison flex libgtk2.0-dev libltdl3-dev libncurses-dev libusb-1.0-0-dev git-core\
@@ -160,7 +142,7 @@ install_dev_tools (){ #istalling files needed for development
            wget libsqlite3-dev libhiredis-dev libgeoip-dev debootstrap qemu-user-static\
            device-tree-compiler lzma lzop u-boot-tools pixz dkms git-core gnupg flex bison gperf libesd0-dev\
 	       zip curl libncurses5-dev zlib1g-dev gcc-multilib g++-multilib libusb-1.0-0 libusb-1.0-0-dev fakeroot\
-	       kernel-package zlib1g-dev devscripts pbuilder dh-make  -y > /dev/null &
+	       kernel-package zlib1g-dev devscripts pbuilder dh-make mingw32 mingw32-binutils -y > /dev/null &
           #ps_status apt-get
 }
 
@@ -173,7 +155,7 @@ set_services(){ #need to disable unneeded services for systems fast boot
 	update-rc.d lvm2 remove; update-rc.d kmod remove; update-rc.d openvas-scanner remove;
 	update-rc.d rsync remove;update-rc.d rc.local remove; update-rc.d speed-dispatcher remove;
 	update-rc.d thin remove;update-rc.d atd remove;update-rc.d kbd remove;
-	update-rc.d nfs-common remove;update-rc.d stunnel4 remove; update-rc.d bluetooth remove; 
+	update-rc.d nfs-common remove;update-rc.d stunnel4 remove; update-rc.d bluetooth remove;
 	update-rc.d saned remove;update-rc.d speech-dispatcher remove;
 	update-rc.d rpcbind remove;update-rc.d acpid remove;update-rc.d avahi-daemon remove;
 	update-rc.d cups remove;update-rc.d rsync remove;
@@ -188,19 +170,19 @@ set_services(){ #need to disable unneeded services for systems fast boot
 
 git_tool_install(){ #downloading some files
 	git_tool_chk=`dpkg -l |grep git|grep 'distributed revision control' > /dev/null ;echo $?`
-	if [ $git_tool_chk == 0  ];then 
+	if [ $git_tool_chk == 0  ];then
 		if [ ! -e /opt/sunxi ];then
 			cd /opt
 			mkdir sunxi -m 775
 			cd sunxi
-			git clone https://github.com/linux-sunxi/sunxi-livesuite.git
-			git clone https://github.com/linux-sunxi/sunxi-tools
+			git clone https://github.com/linux-sunxi/sunxi-livesuite.git &> /tmp/log.txt &
+			git clone https://github.com/linux-sunxi/sunxi-tools &> /tmp/log.txt &
 			cd ../
 			if [ ! -e /opt/arm-tools/ ];then
 				mkdir /opt/arm-tools -m 775
 			cd /opt/arm-tools/
-				git clone https://github.com/offensive-security/gcc-arm-linux-gnueabihf-4.7.git
-				git clone https://github.com/offensive-security/kali-arm-build-scripts.git
+				git clone https://github.com/offensive-security/gcc-arm-linux-gnueabihf-4.7.git &> /tmp/log.txt &
+				git clone https://github.com/offensive-security/kali-arm-build-scripts.git &> /tmp/log.txt &
 			fi
 		fi
 	fi
