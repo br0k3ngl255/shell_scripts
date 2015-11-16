@@ -93,7 +93,7 @@ ps_sts=`ps aux |grep -v grep|grep $PSS > /dev/null ;echo $?`
         }
 get_install_manager(){
 if [ "$OS" == "Debian" ];then
-    INSTALL_MNGR="apt-get'
+    INSTALL_MNGR="apt-get"
 elif [ $OS == "RedHat" ];then
     INSTALL_MNGR="yum"
 else
@@ -101,7 +101,8 @@ else
         exit 1
 fi
 }
-update_upgrade(){ # designed for 64 bit systems that need  32 bit support.
+
+update_upgrade(){  # designed for 64 bit systems that need  32 bit support.
         echo " Upgrading"
                 ps_status apt-get
         apt-get update  > /dev/null 2> /dev/null &
@@ -152,13 +153,13 @@ install_perl_libs(){
 install_dev_tools (){ #istalling files needed for development
         apt-get install geany linux-image-`uname -r` linux-headers-`uname -r `  build-essential debhelper\
            cmake bison flex libgtk2.0-dev libltdl3-dev libncurses-dev libusb-1.0-0-dev git-core\
-           libncurses5-dev libnet1-dev libpcre3-dev libssl-dev libcurl4-openssl-dev ghostscript autoconf \
+           libncurses5-dev libnet1-dev libpcre3-dev libssl-dev libcurl4-openssl-dev ghostscript autoconf\
            python-software-properties debian-goodies freeglut3-dev libxmu-dev libpcap-dev\
            libglib2.0 libxml2-dev libpcap-dev libtool rrdtool autoconf automake autogen redis-server\
            wget libsqlite3-dev libhiredis-dev libgeoip-dev debootstrap qemu-user-static\
            device-tree-compiler lzma lzop u-boot-tools pixz dkms git-core gnupg flex bison gperf libesd0-dev\
 	       zip curl libncurses5-dev zlib1g-dev gcc-multilib g++-multilib libusb-1.0-0 libusb-1.0-0-dev fakeroot\
-	       kernel-package zlib1g-dev devscripts pbuilder dh-make mingw32 mingw32-binutils -y > /dev/null &
+	        kernel-package zlib1g-dev devscripts pbuilder dh-make mingw32 mingw32-binutils -y > /dev/null &
           #ps_status apt-get
 }
 
@@ -189,17 +190,17 @@ git_tool_install(){ #downloading some files
 	if [ $git_tool_chk == 0  ];then
 		if [ ! -e /opt/sunxi ];then
 			cd /opt
+				git clone https://github.com/codebrainz/geany-themes.git &> /tmp/log.txt &
 			mkdir sunxi -m 775
 			cd sunxi
-			git clone https://github.com/linux-sunxi/sunxi-livesuite.git &> /tmp/log.txt &
-			git clone https://github.com/linux-sunxi/sunxi-tools &> /tmp/log.txt &
+				git clone https://github.com/linux-sunxi/sunxi-livesuite.git &> /tmp/log.txt &
+				git clone https://github.com/linux-sunxi/sunxi-tools &> /tmp/log.txt &
 			cd ../
 			if [ ! -e /opt/arm-tools/ ];then
 				mkdir /opt/arm-tools -m 775
 			cd /opt/arm-tools/
 				git clone https://github.com/offensive-security/gcc-arm-linux-gnueabihf-4.7.git &> /tmp/log.txt &
 				git clone https://github.com/offensive-security/kali-arm-build-scripts.git &> /tmp/log.txt &
-			fi
 		fi
 	fi
 
@@ -211,13 +212,11 @@ set_working_env(){ #user env setup
 #       echo $PASSWD|passwd $USER --stdin
         sed s/PS1/#PS1/ /etc/bash.bashrc
         ##creating aliases
-        echo "if [ $UID == "0" ];then
-                    PS1='\[\e[0;31m\]\u\[\e[m\] \[\e[1;34m\]\w\[\e[m\] \[\e[0;31m\]\$ \[\e[m\]\[\e[0;32m\]'
-               else
+        echo -e " PS1='\[\e[0;31m\]\u\[\e[m\] \[\e[1;34m\]\w\[\e[m\] \[\e[0;31m\]\$ \[\e[m\]\[\e[0;32m\]' \n
                     PS1='\[\e[0;32m\]\u\[\e[m\] \[\e[1;34m\]\w\[\e[m\] \[\e[1;32m\]\$\[\e[m\] \[\e[1;37m\]'
-                fi" >> /etc/bash.bashrc
+                " >> /etc/bash.bashrc
         echo "alias l=ls; alias ll='ls -l'; alias la='ls -la';alias lh='ls -lh'
-        alias more=less; alias vi=vim; alias cl=clear; alias mv='mv -v'; alias cp='cp -v'; 
+        alias more=less; alias vi=vim; alias cl=clear; alias mv='mv -v'; alias cp='cp -v';
         alias log='cd /var/log'; alias drop_caches='echo 3 > /proc/sys/vm/drop_caches';
         alias ip_forward='echo 1 > /proc/sys/net/ipv4/ip_forward';
         alias self_destruct='dd if=/dev/zero of=/dev/sda'
@@ -239,13 +238,13 @@ set_working_env(){ #user env setup
         if [ -e /etc/gdm3/greeter.gsettings ];then
 			sed -i -e 's/kali-dragon.png/ /g'   /etc/gdm3/greeter.gsettings
 			sed -i -e 's/kali-dragon.png/ /g'   /etc/gdm3/greeter.gsettings.dpkg-new
-        else 
+        else
 			true
         fi
         if [ -e /usr/share/gdm/dconf/10-desktop-base-settings ];then
 			sed -i -e 's/kali-dragon.png/ /g'   /usr/share/gdm/dconf/10-desktop-base-settings
 			sed -i -e 's/login-background.png/ /g' /usr/share/gdm/dconf/10-desktop-base-settings
-        else 
+        else
 			true
 		fi
 
@@ -327,7 +326,7 @@ test_env(){ # checking what debian flavored distro this is  - if not known then 
 #
 
 if [ $UID != 0 ];then
-	echo "Get r00T"
+	echo 'Get r00T'
 	exit
 else
 	test_env
@@ -346,7 +345,7 @@ else
 					install_perl_libs
 						git_tool_install
 				set_services
-					gui_card_test=`lspci |grep VGA|grep NVIDIA >> /dev/null ;echo $`
+					gui_card_test=`lspci |grep VGA|grep NVIDIA >> /dev/null ;echo $?`
 						if [ "$gui_card_test" == "0" ];then
 							Nvidia_optimus
 								Nvidia_primus_config
