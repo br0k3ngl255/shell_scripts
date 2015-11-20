@@ -201,6 +201,8 @@ git_tool_install(){ #downloading some files
 			cd /opt/arm-tools/
 				git clone https://github.com/offensive-security/gcc-arm-linux-gnueabihf-4.7.git &> /tmp/log.txt &
 				git clone https://github.com/offensive-security/kali-arm-build-scripts.git &> /tmp/log.txt &
+			cd ../
+				svn co svn://svn.linuxfromscratch.org/LFS/trunk/BOOK/
 		fi
 	fi
 
